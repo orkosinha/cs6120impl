@@ -14,15 +14,15 @@ def local_dce(block):
                     last_def.pop(arg)
             # Check for defs
             if "dest" in instr:
-                if instr['dest'] in last_def:
+                if instr["dest"] in last_def:
                     # Hasn't been used since redef, so can delete
-                    to_delete.append(last_def[instr['dest']])
-                last_def[instr['dest']] = i
+                    to_delete.append(last_def[instr["dest"]])
+                last_def[instr["dest"]] = i
 
         for i in reversed(to_delete):
             changed = True
             block.pop(i)
-    
+
     return block
 
 
