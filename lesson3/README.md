@@ -1,7 +1,6 @@
 # Lesson 3: Local Analysis & Optimization
 
 This is an implementation of the tasks from [here](https://www.cs.cornell.edu/courses/cs6120/2022sp/lesson/3/#tasks).
-
 ## Usage
 ```
 usage: lesson3.py [-h] [-l] [-d]
@@ -33,9 +32,9 @@ The pseudocode discussed in class was very straight forward to follow, but while
 Mostly because I failed to realize the kinds of cases trivial dead code elimination does not capture. 
 
 ## Local Value Numbering
-Local value numbering is implemented with CSE exploiting commutativity and copy propogation.
+Local value numbering is implemented with CSE exploiting commutativity and copy propagation.
 
-I originially started by trying to follow the pseudocode as closely as possible, but it wasn't that simple. The first problem I ran into was the control flow of when to assign a new number and when to lookup in the table due to the variety of operations.
+I originally started by trying to follow the pseudocode as closely as possible, but it wasn't that simple. The first problem I ran into was the control flow of when to assign a new number and when to lookup in the table due to the variety of operations.
 
 Variables that were declared before the block but used in the current block proved to be an issue. I took care of this by assigning a lvn number to these previously declared variables. 
 
@@ -52,9 +51,9 @@ Another major issue I ran into was handling re-defined variables. I used the fol
     print y;
 }
 ```
-I originally renamed the variable and wanted to rename all occurences before the next assignment to the new name, but it was simpler to just add it to my `var2num` map. Eventually, this will get overwritten by the redefinition, so it seemed okay to do.
+I originally renamed the variable and wanted to rename all occurrences before the next assignment to the new name, but it was simpler to just add it to my `var2num` map. Eventually, this will get overwritten by the redefinition, so it seemed okay to do.
 
-I was originally a bit ambitious and added a type to my value tuples to support constant propogation and folding constants as they came by matching the type, but I didn't get a chance to implement this.
+I was originally a bit ambitious and added a type to my value tuples to support constant propagation and folding constants as they came by matching the type, but I didn't get a chance to implement this.
 
 ## Testing
 I tested my optimizations using the `./tests/` directory and Turnt. Most of the tests are from the examples in class, but I also cherry-picked some of the benchmarks using core Bril and tested with Turnt. Although, I'm not sure if I'm using Turnt correctly, as I originally started with generating the `.out` files using Turnt with the following in my `turnt.toml` file
@@ -64,10 +63,3 @@ command = "bril2json < {filename} | brili"
 and then modifying it to be 
 ```
 command = "bril2json < {filename} | ../lesson3.py -l | brili"
-```
-
-
-
-
-
-
