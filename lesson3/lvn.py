@@ -65,7 +65,7 @@ def lvn(block):
         args = instr.get("args", []).copy()
         lvn_args = [var2num[var] for var in args]
 
-        if var and instr.get("op") and instr["op"] != "call" and instr["op"] not in MEMORY:
+        if var and instr.get("op") and instr["op"] != "call":
             value = canonical_value(instr, var2num)
 
             # Find the lvn num of this value
