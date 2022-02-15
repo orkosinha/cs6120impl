@@ -28,10 +28,10 @@ def local_dce(block):
 
 # Perform dce function wide
 def global_dce(body):
-    used = set()
     prev_inst_count = -1
 
     while prev_inst_count != len(body):
+        used = set()
         for instr in body:
             used.update(instr.get("args", []))
         prev_inst_count = len(body)

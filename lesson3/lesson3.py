@@ -4,6 +4,7 @@ import json
 import sys
 import argparse
 import tdce
+import lvn
 
 TERMINATORS = ["jmp", "br", "ret"]
 
@@ -29,10 +30,10 @@ def form_blocks(body):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-o",
+        "-l",
         "--lvn",
         action="store_true",
-        help="perform optimizations using local value numbering",
+        help="perform optimizations using local value numbering and pass of dce",
     )
     parser.add_argument(
         "-d",
@@ -45,22 +46,22 @@ def main():
     program = json.load(sys.stdin)
 
     blocks = []
+
     for func in program["functions"]:
         processed_blocks = []
         for block in form_blocks(func["instrs"]):
             if arguments.lvn:
-                processed_blocks += tdce.local_dce(block)
+                processed_block = lvn.lvn(block)
+                processed_blocks += tdce.local_dce(processed_block)
             elif arguments.dce:
                 processed_blocks += tdce.local_dce(block)
             else:
                 processed_blocks += block
-        func["instrs"] = processed_blocks
-        if arguments.dce:
-            meme = tdce.global_dce(func["instrs"])
+        if arguments.lvn or arguments.dce:
+            func["instrs"] = tdce.global_dce(processed_blocks)
 
     json.dump(program, sys.stdout, indent=2)
     print()
-
 
 if __name__ == "__main__":
     main()
