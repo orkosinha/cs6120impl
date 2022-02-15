@@ -2,7 +2,6 @@ TERMINATORS = ["jmp", "br", "ret"]
 COMMUTATIVE = ["add", "mul", "eq", "and", "or"]
 FOLDABLE = COMMUTATIVE + ["lt", "gt", "le", "ge", "not"]
 
-
 def canonical_value(instr, var2num):
     if instr["op"] == "const":
         return (instr["op"], instr["type"], instr["value"])
@@ -22,7 +21,8 @@ def canonical_value(instr, var2num):
     if "type" in instr:
         return (instr["op"], instr["type"], *lvn_args)
 
-
+    return (instr["op"], *lvn_args)
+    
 def existing_vars(block):
     used = set()
     declared = set()
@@ -65,42 +65,40 @@ def lvn(block):
         args = instr.get("args", []).copy()
         lvn_args = [var2num[var] for var in args]
 
-        # Compute the value it should be
-        value = canonical_value(instr, var2num)
+        if var and instr.get("op") and instr["op"] != "call" and instr["op"] not in MEMORY:
+            value = canonical_value(instr, var2num)
 
-        if var:
-            if instr["op"] != "call":
-                # Find the lvn num of this value
-                num = 0
+            # Find the lvn num of this value
+            num = 0
 
-                if instr["op"] == "id":
-                    # If it's an id, we can get it from the map
-                    # Copy Propagation
-                    num = var2num[instr["args"][0]]
-                    var2num[var] = num
-                elif value in val2num:
-                    # Default way of looking from table
-                    num = val2num[value]
-                    var2num[var] = num
-                if num != 0:
-                    # Found a lvn num for the value, so replace it with id and exit loop
-                    instr["op"] = "id"
-                    instr["args"] = [num2var[num]]
-                else:
-                    for j in range(i+1, len(block)):
-                        if var == block[j].get("dest"):
-                            var2num[var] = numbering
-                            var = f"lvn.{var}"
-                            break
-                    
-                    instr['dest'] = var
+            if instr["op"] == "id":
+                # If it's an id, we can get it from the map
+                # Copy Propagation
+                num = var2num[instr["args"][0]]
+                var2num[var] = num
+            elif value in val2num:
+                # Default way of looking from table
+                num = val2num[value]
+                var2num[var] = num
+            if num != 0:
+                # Found a lvn num for the value, so replace it with id and exit loop
+                instr["op"] = "id"
+                instr["args"] = [num2var[num]]
+            else:
+                for j in range(i+1, len(block)):
+                    if var == block[j].get("dest"):
+                        var2num[var] = numbering
+                        var = f"lvn.{var}"
+                        break
+                
+                instr['dest'] = var
 
-                    # Didn't find the value in the table, so add a new number
-                    var2num[var] = numbering
-                    num2var[numbering] = var
-                    val2num[value] = numbering
+                # Didn't find the value in the table, so add a new number
+                var2num[var] = numbering
+                num2var[numbering] = var
+                val2num[value] = numbering
 
-                    numbering += 1
+                numbering += 1
 
         if args:
             instr["args"] = [num2var[n] for n in lvn_args]

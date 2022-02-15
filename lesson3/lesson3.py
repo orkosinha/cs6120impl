@@ -45,8 +45,6 @@ def main():
 
     program = json.load(sys.stdin)
 
-    blocks = []
-
     for func in program["functions"]:
         processed_blocks = []
         for block in form_blocks(func["instrs"]):
