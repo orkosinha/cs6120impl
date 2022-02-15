@@ -61,5 +61,6 @@ def main():
     json.dump(program, sys.stdout, indent=2)
     print()
 
+
 if __name__ == "__main__":
     main()

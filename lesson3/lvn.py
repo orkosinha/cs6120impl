@@ -2,6 +2,7 @@ TERMINATORS = ["jmp", "br", "ret"]
 COMMUTATIVE = ["add", "mul", "eq", "and", "or"]
 FOLDABLE = COMMUTATIVE + ["lt", "gt", "le", "ge", "not"]
 
+
 def canonical_value(instr, var2num):
     if instr["op"] == "const":
         return (instr["op"], instr["type"], instr["value"])
@@ -22,16 +23,17 @@ def canonical_value(instr, var2num):
         return (instr["op"], instr["type"], *lvn_args)
 
     return (instr["op"], *lvn_args)
-    
+
+
 def existing_vars(block):
     used = set()
     declared = set()
     existing = set()
     for instr in block:
-        for arg in instr.get('args', []):
+        for arg in instr.get("args", []):
             if arg not in declared:
                 existing.add(arg)
-        declared.update(instr.get('dest', []))
+        declared.update(instr.get("dest", []))
     return existing
 
 
@@ -85,13 +87,13 @@ def lvn(block):
                 instr["op"] = "id"
                 instr["args"] = [num2var[num]]
             else:
-                for j in range(i+1, len(block)):
+                for j in range(i + 1, len(block)):
                     if var == block[j].get("dest"):
                         var2num[var] = numbering
                         var = f"lvn.{var}"
                         break
-                
-                instr['dest'] = var
+
+                instr["dest"] = var
 
                 # Didn't find the value in the table, so add a new number
                 var2num[var] = numbering
