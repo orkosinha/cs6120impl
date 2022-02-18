@@ -50,22 +50,12 @@ def block_map(blocks):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-d",
-        "--lvn",
-        action="store_true",
-        help="perform optimizations using local value numbering and pass of dce",
-    )
-    arguments = parser.parse_args()
-
     program = json.load(sys.stdin)
 
     for func in program["functions"]:
         name2block = block_map(form_blocks(func["instrs"]))
         cfg = CFG(name2block)
         df.run_worklist(cfg, name2block)
-    # json.dump(program, sys.stdout, indent=2)
     print()
 
 

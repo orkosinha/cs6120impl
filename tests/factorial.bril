@@ -1,5 +1,5 @@
 @main {
-    result: int = const;
+    result: int = const 1;
     i: int = const 8;
 
 .header:
