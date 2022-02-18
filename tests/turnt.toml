@@ -1,0 +1,1 @@
+command = "bril2json < {filename} | .lesson4/lesson4.py"
