@@ -23,8 +23,20 @@ def main():
         help="compute dominators"
     )
     parser.add_argument(
-        "-t",
-        "--test",
+        "-dt",
+        "--domtree",
+        action="store_true",
+        help="compute dominator tree"
+    )
+    parser.add_argument(
+        "-df",
+        "--domfrontier",
+        action="store_true",
+        help="compute dominator frontier"
+    )
+    parser.add_argument(
+        "-v",
+        "--verify",
         action="store_true",
         help="test dominators"
     )
@@ -45,7 +57,15 @@ def main():
             print(f"Dominator map for {cfg.name}")
             print(f"  {d.dom}")
         
-        if arguments.test:
+        if arguments.domtree:
+            print(f"Dominator tree for {cfg.name}")
+            print(f"  {d.tree()}")
+
+        if arguments.domfrontier:
+            print(f"Dominance frontier for {cfg.name}")
+            print(f"  {d.frontier()}")
+
+        if arguments.verify:
             print(" ", "Passed" if check_dom(cfg, d.dom) else "Failed", "check_dom")
         
         print()
