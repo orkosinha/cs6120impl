@@ -4,7 +4,7 @@ class Dominator:
         order = cfg.reverse_post_order()
         
         # dom = {every block -> all blocks}
-        dominator = {label: set(order) for label in order}
+        dominator = {label: set(cfg.graph.keys()) for label in cfg.graph.keys()}
 
         # while dom is still changing:
         changed = True
@@ -16,10 +16,19 @@ class Dominator:
                 # dom[vertex] = {vertex} ∪ ⋂(dom[p] for p in vertex.preds}
                 dom = { label }
                 pred_lst = [set(dominator[pred]) for pred in node.predecessors]
-                if len(pred_lst) > 0:
+
+                if len(pred_lst) == 1:
+                    dom |= pred_lst[0]
+                elif len(pred_lst) > 1:
                     dom |= pred_lst[0].intersection(*pred_lst[1:])
 
-                changed = dom != dominator[label]
-                dominator[label] = dom
-        print(dominator)
+                changed = (dom != dominator[label])
+                if cfg.entry != label:
+                    dominator[label] = dom
+                else:
+                    dominator[label] ={ label }
+                    changed = False
+
         self.dom = dominator
+
+    

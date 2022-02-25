@@ -83,6 +83,7 @@ class CFG:
 
         self.predecessors = preds
         self.successors = succs
+        self.entry = label2block.popitem(last=False)[0]
         self.graph = label2node
 
     def reverse_post_order(self):
