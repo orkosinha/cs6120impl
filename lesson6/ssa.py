@@ -73,10 +73,10 @@ def to_ssa(func):
 
         for succ in cfg.graph[label].successors:
             for var in set(label2phi[succ].keys()):
-                if stack[var]:
+                if stack[var]: #and types.get(var):
                     label2phi[succ][var]["args"].append(stack[var][-1])
                     label2phi[succ][var]["labels"].append(label)
-                    label2phi[succ][var]["type"] = types[var]
+                    label2phi[succ][var]["type"] = types.get(var)
                 else:
                     label2phi[succ].pop(var)
                     
@@ -100,5 +100,23 @@ def to_ssa(func):
     return cfg.to_bril()
 
 
-def from_ssa(cfg):
-    return
+def from_ssa(func):
+    cfg = CFG(func)
+
+    for label, block in cfg.label2block.items():
+        for instr in block:
+            if instr.get('op') == 'phi':
+
+                for i, phi_label in enumerate(instr['labels']):
+                        new_instr = {
+                            'op': 'id',
+                            'type': instr['type'],
+                            'args': [instr['args'][i]],
+                            'dest': instr['dest']
+                        }
+                        cfg.label2block[label].append(new_instr)
+            
+        cfg.label2block[label] = filter(lambda i: i.get('op') != 'phi', cfg.label2block[label])
+    
+    return cfg.to_bril()
+    

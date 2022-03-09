@@ -3,7 +3,7 @@
 import sys
 import json
 import argparse
-from ssa import to_ssa
+from ssa import to_ssa, from_ssa
 
 
 def main():
@@ -20,9 +20,14 @@ def main():
     for func in program["functions"]:
         if arguments.to_ssa:
             instrs = to_ssa(func)
-            func['instrs'] = instrs
+            func["instrs"] = instrs
+        if arguments.from_ssa:
+            instrs = from_ssa(func)
+            func["instrs"] = instrs
 
     json.dump(program, sys.stdout)
+    print()
+
 
 if __name__ == "__main__":
     main()

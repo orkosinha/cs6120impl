@@ -48,19 +48,38 @@ class Dominator:
                 return (label, [tree_builder(l) for l in dom_inv[label]])
             return (label, [])
 
-        return tree_builder(self.cfg.entry), dom_inv
+        return tree_builder(self.cfg.entry)
+
+    def dom_tree(self):
+        dom_inv = {key: [] for key in self.dom}
+        for p, ss in self.dom.items():
+            for s in ss:
+                dom_inv[s].append(p)
+
+        dom_inv_strict = {a: {b for b in bs if b != a} for a, bs in dom_inv.items()}
+        dom_inv_strict_2x = {
+            a: set().union(*(dom_inv_strict[b] for b in bs))
+            for a, bs in dom_inv_strict.items()
+        }
+        return {
+            a: {b for b in bs if b not in dom_inv_strict_2x[a]}
+            for a, bs in dom_inv_strict.items()
+        }
 
     def frontier(self):
-        frontier = {label: set() for label in self.cfg.graph.keys()}
+        dom_inv = {key: [] for key in self.dom}
+        for p, ss in self.dom.items():
+            for s in ss:
+                dom_inv[s].append(p)
 
-        for label in self.cfg.graph.keys():
-            # Get dominators of this nodes predecessors
-            pred_dom = set()
-            for pred in self.cfg.graph[label].predecessors:
-                pred_dom |= self.dom[pred]
-            pred_dom -= self.dom[label] - {label}
+        frontier = {}
+        for block in self.dom:
+            dominated_succs = set()
+            for dominated in dom_inv[block]:
+                dominated_succs.update(self.cfg.graph[dominated].successors)
 
-            for pred in pred_dom:
-                frontier[pred] |= {label}
+            frontier[block] = [
+                b for b in dominated_succs if b not in dom_inv[block] or b == block
+            ]
 
         return frontier
