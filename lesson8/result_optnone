@@ -1,0 +1,69 @@
+Log file: /workspaces/cs6120impl/lesson8/embench-iot/logs/speed-2022-03-23-044916.log
+
+
+Supplied arguments
+==================
+--builddir            : bd
+--logdir              : logs
+--baselinedir         : baseline-data
+--absolute            : False
+--output-format       : None
+--json-comma          : False
+--target-module       : run_native
+--timeout             : 30
+--sim-parallel        : False
+
+Benchmarks
+==========
+aha-mont64
+crc32
+cubic
+edn
+huffbench
+matmult-int
+md5sum
+minver
+nbody
+nettle-aes
+nettle-sha256
+nsichneu
+picojpeg
+primecount
+qrduino
+sglib-combined
+slre
+st
+statemate
+tarfind
+ud
+wikisort
+
+Benchmark           Speed
+---------           -----
+aha-mont64         4004000.00
+crc32              4010000.00
+cubic              3931000.00
+edn                4010000.00
+huffbench          4120000.00
+matmult-int        3985000.00
+md5sum             4002000.00
+minver             3998000.00
+nbody              2808000.00
+nettle-aes         4026000.00
+nettle-sha256      3997000.00
+nsichneu           4001000.00
+picojpeg           4030000.00
+primecount         3834000.00
+qrduino            4253000.00
+sglib-combined     3981000.00
+slre               4010000.00
+st                 4080000.00
+statemate          4001000.00
+tarfind            4033000.00
+ud                 3999000.00
+wikisort           2779000.00
+---------           -----
+Geometric mean     3884344.72
+Geometric SD         1.11
+Geometric range    823436.42
+All benchmarks run successfully

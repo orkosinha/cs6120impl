@@ -3,6 +3,7 @@
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
 #include "llvm/IR/InstVisitor.h"
 #include "llvm/IR/IRBuilder.h"
+#include <llvm/IR/NoFolder.h>
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/Transforms/IPO/PassManagerBuilder.h"
@@ -21,7 +22,7 @@ namespace {
         for (auto &I: BB) {
           if (auto* op = dyn_cast<BinaryOperator>(&I)) {
 
-            IRBuilder<> builder(op);
+            IRBuilder<llvm::NoFolder> builder(op);
             if (op->getOpcode() == Instruction::Add) {
               ConstantInt* lhs = dyn_cast<ConstantInt>(op->getOperand(0));
               ConstantInt* rhs = dyn_cast<ConstantInt>(op->getOperand(1));
