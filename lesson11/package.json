@@ -1,0 +1,16 @@
+{
+  "name": "os92bril",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "bin": {
+    "briligc": "build/briligc.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod a+x build/briligc.js"
+  },
+  "dependencies": {
+    "@types/node": "^11.13.5",
+    "typescript": "^3.4.3"
+  }
+}

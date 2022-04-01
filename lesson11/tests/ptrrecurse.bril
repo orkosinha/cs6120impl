@@ -1,0 +1,5 @@
+@main {
+  n: int = const 1;
+  ptr1: ptr<int> = alloc n;
+  ptr2: ptr<ptr<int>> = alloc ptr1;
+}
