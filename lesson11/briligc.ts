@@ -360,7 +360,7 @@ function evalCall(instr: bril.Operation, state: State): Action {
     specparent: null,  // Speculation not allowed.
     gc: state.gc,
   }
-  // RCGC - 2. On function call, increment all referenced before call and decrement afterwards.
+  // RCGC - 2. On function call, increment all argument object's reference counts.
   state.gc.incEnv(newEnv);
   let retVal = evalFunc(func, newState);
   state.icount = newState.icount;
