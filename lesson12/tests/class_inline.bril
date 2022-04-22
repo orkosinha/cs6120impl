@@ -1,0 +1,17 @@
+@main(x: int) {
+  one: int = const 1;
+  y: int = add x one;
+  cst: int = const 100;
+  cond: bool = lt x cst;
+  br cond .true .false;
+.true:
+  b: int = sub y one;
+  z: int = id b;
+  jmp .exit;
+.false:
+  b: int = add y one;
+  z: int = id b;
+  jmp .exit;
+.exit:
+  print z;
+}
