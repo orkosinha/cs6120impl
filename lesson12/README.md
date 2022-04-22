@@ -3,7 +3,7 @@ My implementation of the modified [brili](https://github.com/orkosinha/cs6120imp
 ## Tracing
 Tracing is implemented starting from the main function to the first `call`, `print`, `store`, `alloc`, or `free` as a starting point. I construct the trace with the modified interpretter in the first run, add it to the program and run it through the non-modified interpretter. 
 
-Some thing in encountered in my `trace` function 
+Some thing in encountered in my [`trace` function](https://github.com/orkosinha/cs6120impl/blob/1b7169d2e8c3d695e54c64c62a8212610ac54cd2/lesson12/brilitc.ts#L410)
 
 ## Results
 | Benchmark                  | Percent Change |

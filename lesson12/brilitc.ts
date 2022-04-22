@@ -316,8 +316,6 @@ type State = {
 
   tracing: boolean,
 
-  traced: bril.Instruction[],
-
   traced_line: bril.Label[],
 }
 
@@ -365,7 +363,6 @@ function evalCall(instr: bril.Operation, state: State): Action {
     specparent: null,  // Speculation not allowed.
     trace: state.trace,
     tracing: state.tracing,
-    traced: state.traced,
     traced_line: state.traced_line,
   }
   let retVal = evalFunc(func, newState);
@@ -408,8 +405,6 @@ function evalCall(instr: bril.Operation, state: State): Action {
  * Perform tracing
  */
 function trace(instr: bril.Instruction, state: State): void {
-  state.traced.push(instr);
-
   let stop_tracing_ops = ["call", "print", "store", "alloc", "free", "jmp"];
   let bail_name = "bail_function";
   if (stop_tracing_ops.includes(instr.op)) {
@@ -465,10 +460,8 @@ function trace(instr: bril.Instruction, state: State): void {
  * instruction or "end" to terminate the function.
  */
 function evalInstr(instr: bril.Instruction, state: State): Action {
-  if (state.tracing && !state.traced.includes(instr)) {
+  if (state.tracing) {
     trace(instr, state);
-  } else {
-    state.tracing = false;
   }
   
   state.icount += BigInt(1);
