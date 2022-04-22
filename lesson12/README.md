@@ -1,7 +1,7 @@
 My implementation of the modified [brili](https://github.com/orkosinha/cs6120impl/tree/main/lesson12) interpreter with tracing.
 
 ## Tracing
-Tracing is implemented starting from the main function to the first `call`, `print`, `store`, `alloc`, or `free` as a starting point. I construct the trace with the modified interpretter in the first run, add it to the program and run it through the non-modified interpretter. 
+Tracing is implemented starting from the main function to the first `call`, `print`, `store`, `alloc`, or `free` as a starting point. I construct the trace with the modified interpreter in the first run, add it to the program and run it through the non-modified interpreter. 
 
 Some specifications to my [`trace` function](https://github.com/orkosinha/cs6120impl/blob/1b7169d2e8c3d695e54c64c62a8212610ac54cd2/lesson12/brilitc.ts#L410)
 
@@ -10,9 +10,9 @@ Some specifications to my [`trace` function](https://github.com/orkosinha/cs6120
 * If a jmp has been encountered before while tracing, then I should commit and end tracing.
 
 ## Results
-The results were not impressive, probably the opposite as nothing really got any performance improvements. However, the way tracing is implemented here, it makes sense as it's only from the main function with no optimizations performmed on the trace.
+The results were not impressive, probably the opposite as nothing really got any performance improvements. However, the way tracing is implemented here, it makes sense as it's only from the main function with no optimizations performed on the trace.
 
-Here are the results from the benchmarks, thankfully nothing crashed and the same results were produced. So, it's a very slight success in that I am adding code and getting the same results.
+Here are the results from the benchmarks, thankfully nothing crashed and the same results were produced. So, it's a very slight success in that I am adding code and getting the same results. I thought it was interesting that the pow benchmark gained a 25% of it's original instruction count.
 | Benchmark                  | Percent Change |
 | -------------------------- | -------------- |
 | mat-mul                    | 0.00%          |
