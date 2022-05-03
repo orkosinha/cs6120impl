@@ -6,7 +6,7 @@ import sys
 GRAMMAR = """
 ?start: sum
   | sum "?" sum ":" sum -> if
-  | "let" CNAME "=" sum "in" start -> let
+  | "let" CNAME "=" start "in" start -> let
 
 ?sum: term
   | sum "+" term        -> add
@@ -71,8 +71,6 @@ def interp(tree, lookup, update):
         result = interp(tree.children[2], lookup, update)
         update(tree.children[0], interp(tree.children[1], lookup, update), False if old else True)
         return result
-
-
 
 
 def solve(phi):
