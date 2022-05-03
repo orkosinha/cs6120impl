@@ -1,0 +1,2 @@
+let a = 1 in let b = a + a in let c = b * b in let d = b * c in d + x
+x + h1
